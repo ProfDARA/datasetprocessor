@@ -1,51 +1,78 @@
-﻿# Panduan Pengolahan CSV
+# Panduan Pengolahan Dataset CSV
 
-Repo ini berisi dua notebook untuk mengolah file CSV. Notebook dibuat agar Anda cukup mengganti beberapa pengaturan di bagian atas, lalu menjalankannya dari atas ke bawah.
+Repo ini adalah kumpulan notebook untuk pekerjaan CSV, dari tugas sehari-hari sampai pencocokan data yang lebih rumit. Setiap notebook berdiri sendiri: buka notebook sesuai kebutuhan, ubah bagian **KONFIGURASI** di dekat atas, lalu jalankan sel dari atas ke bawah.
 
-## Isi repo
+File sumber di folder `Input` tidak ditimpa. Semua hasil disimpan di folder `Output`; menjalankan ulang notebook dapat mengganti hasil lama dengan nama yang sama. Notebook 11 akan berhenti jika file hasil sudah ada, kecuali Anda mengaktifkan penggantian secara khusus.
 
-- **Notebook 1 - Join DB.ipynb** — menggabungkan beberapa file CSV yang memiliki ID yang sama, misalnya ID pelanggan atau kode produk.
-- **Notebook 2 - Erase Column.ipynb** — membuang kolom yang tidak diperlukan dari sebuah file CSV. Secara bawaan, notebook ini membaca hasil dari Notebook 1.
+## Mulai cepat
 
-## Persiapan
+1. Letakkan semua file CSV masukan di folder `Input`, sejajar dengan notebook. Simpan hasil notebook di folder `Output` yang juga sejajar dengan notebook.
+2. Buka notebook dengan Jupyter Notebook, JupyterLab, atau Visual Studio Code.
+3. Di sel konfigurasi paling atas, sesuaikan nama file, kolom, dan pilihan proses.
+4. Jalankan notebook dari atas ke bawah.
+5. File hasil akan muncul di folder `Output`. Folder ini dibuat otomatis jika belum ada.
 
-1. Siapkan file CSV yang ingin diolah.
-2. Buat folder bernama `data` di dalam folder repo, lalu letakkan file sumber di sana.
-3. Buka notebook dengan Jupyter Notebook, JupyterLab, atau Visual Studio Code.
-4. Jalankan sel dari bagian paling atas ke bawah. Jika diminta memilih kernel, pilih Python 3.
+Untuk file yang berada di tempat lain, Anda boleh menulis path lengkap. Jika CSV memakai titik koma sebagai pemisah kolom, ubah pengaturan `SEP` atau `INPUT_SEP` dari `,` menjadi `;`.
 
-Notebook membutuhkan Python dan pustaka `pandas`. Jika notebook memberi pesan bahwa `pandas` belum tersedia, minta bantuan untuk memasangnya pada lingkungan Python yang digunakan.
+## Pilih notebook sesuai kebutuhan
 
-## Notebook 1 — Gabungkan file CSV
+| No. | Notebook | Gunakan untuk |
+|---:|---|---|
+| 1 | **Notebook 1 - Join DB** | Menggabungkan kolom dari beberapa file berdasarkan ID yang sama. |
+| 2 | **Notebook 2 - Erase Column** | Memilih kolom yang disimpan atau membuang kolom tertentu. |
+| 3 | **Notebook 3 - Append CSV** | Menumpuk baris dari beberapa file, misalnya data per bulan. |
+| 4 | **Notebook 4 - Clean Data** | Merapikan spasi, penanda kosong, tanggal, dan angka. |
+| 5 | **Notebook 5 - Remove Duplicates** | Menemukan dan menghapus baris duplikat. |
+| 6 | **Notebook 6 - Split Dataset** | Membagi data menjadi train, validation, dan test. |
+| 7 | **Notebook 7 - Reshape Table** | Mengubah tabel lebar menjadi panjang atau sebaliknya. |
+| 8 | **Notebook 8 - Compare CSV** | Membandingkan dua versi CSV: baris baru, hilang, dan berubah. |
+| 9 | **Notebook 9 - Data Quality Audit** | Membuat laporan nilai kosong, duplikat, dan nilai di luar aturan. |
+| 10 | **Notebook 10 - Fuzzy Match** | Mencari nama yang mirip meski ejaannya tidak persis sama. |
+| 11 | **Notebook 11 - Large CSV** | Memproses file besar sedikit demi sedikit agar lebih hemat memori. |
 
-1. Buka **Notebook 1 - Join DB.ipynb**.
-2. Pada bagian **KONFIGURASI**, ganti `FILE_UTAMA` dengan nama file utama Anda. Contoh: `data/pelanggan.csv`.
-3. Isi `ID_UTAMA` dengan nama kolom ID pada file utama. Nama kolom harus sama persis dengan judul kolom di CSV.
-4. Pada `FILE_JOIN`, isi nama/path file tambahan dan nama kolom ID-nya. Tambahkan satu baris untuk setiap file yang ingin digabungkan.
-5. Pilih jenis gabungan pada `how`:
-   - `left` mempertahankan semua baris dari file utama.
-   - `inner` hanya mempertahankan ID yang ada di kedua file.
-   - `outer` mempertahankan semua ID dari kedua file.
-   - `right` mempertahankan semua baris dari file tambahan.
-6. Jika CSV menggunakan titik koma untuk memisahkan kolom, ganti `sep` dari `,` menjadi `;`.
-7. Jalankan semua sel. Hasilnya disimpan di `output/hasil_join.csv`.
+## Alur yang paling umum
 
-Pastikan ID memang mewakili hal yang sama di semua file. Jika sebuah ID muncul beberapa kali di file tambahan, hasil gabungan dapat memiliki baris lebih banyak.
+Untuk menggabungkan file, lalu merapikan kolom:
 
-## Notebook 2 — Buang kolom
+1. Jalankan **Notebook 1**. Atur file utama, kolom ID, file tambahan, dan jenis join. Hasil bawaan: `hasil_join.csv` di folder `Output`.
+2. Jalankan **Notebook 2**. Hasil join tadi sudah menjadi sumber bawaan. Isi `KEEP_COLUMNS` untuk menyimpan kolom tertentu, atau gunakan `DROP_COLUMNS` untuk membuang beberapa kolom. Hasil bawaan: `hasil_trim_kolom.csv` di folder `Output`.
 
-1. Buka **Notebook 2 - Erase Column.ipynb**.
-2. Secara bawaan, `INPUT_PATH` mengarah ke `output/hasil_join.csv` dari Notebook 1. Jika ingin mengolah file lain, ganti path tersebut.
-3. Cara paling aman adalah mengisi `KEEP_COLUMNS` dengan daftar kolom yang ingin disimpan, misalnya `["id", "nama"]`. Kolom lain akan dibuang.
-4. Jika lebih mudah, biarkan `KEEP_COLUMNS = None`, lalu isi `DROP_COLUMNS` dengan nama kolom yang ingin dibuang.
-5. Jika CSV menggunakan pemisah titik koma, ubah `INPUT_SEP` menjadi `;`.
-6. Jalankan semua sel. Hasilnya disimpan di `output/tabel_trim.csv`.
+## Catatan pemakaian
 
-File sumber tidak ditimpa. Notebook membuat file hasil baru di folder `output`.
+### Join berdasarkan ID
+
+Simpan file masukan di folder `Input` dan hasil akan ditulis ke folder `Output`. Kedua folder berada pada tingkat yang sama dengan semua notebook. Path bawaan sudah menunjuk ke folder tersebut.
+
+Di Notebook 1, `left` mempertahankan semua baris dari file utama, sedangkan `inner` hanya mempertahankan ID yang ditemukan di kedua file. `outer` mempertahankan seluruh ID dari kedua sisi. Pastikan ID memang mengacu pada orang/barang yang sama di semua file. Jika sebuah ID muncul berulang, join bisa menghasilkan lebih banyak baris.
+
+### Memilih atau membuang kolom
+
+Di Notebook 2, cara paling aman untuk menyimpan hanya beberapa kolom adalah mengisi `KEEP_COLUMNS`, misalnya `['id', 'nama']`. Jika `KEEP_COLUMNS` diatur ke `None`, daftar `DROP_COLUMNS` yang digunakan untuk membuang kolom.
+
+### Pembersihan dan konversi
+
+Notebook 4 dapat mengubah teks tanggal menjadi format tahun-bulan-hari dan mengubah kolom angka. Periksa hasilnya karena nilai yang tidak cocok dengan format akan menjadi kosong.
+
+### Pembagian dataset
+
+Notebook 6 dapat membagi baris secara acak dengan hasil yang dapat diulang. Jika baris dari orang atau dokumen yang sama tidak boleh tersebar ke beberapa bagian, isi `GROUP_COLUMN`. Nilai grup yang kosong perlu dibereskan terlebih dahulu.
+
+### Fuzzy matching
+
+Notebook 10 hanya menghasilkan kandidat kemiripan untuk diperiksa. Jangan langsung menganggap nama dengan skor tinggi sebagai orang/barang yang sama. Notebook ini memerlukan pustaka tambahan `rapidfuzz`; bila belum terpasang, jalankan `pip install rapidfuzz` pada lingkungan Python notebook. Untuk file besar, cobalah sampel terlebih dahulu lewat `LIMIT_ROWS`.
+
+### File besar
+
+Notebook 11 membaca CSV per bagian (`CHUNK_SIZE`). Jika hasil dengan nama yang sama sudah ada, notebook berhenti untuk mencegah penggantian yang tidak sengaja. Untuk menggantinya, ubah `OUTPUT_PATH` atau set `OVERWRITE_OUTPUT = True` setelah memastikan file lama memang boleh ditimpa.
+
+## Kebutuhan Python
+
+Notebook 1–9 dan 11 menggunakan `pandas`. Notebook 6 juga menggunakan `numpy` (sering sudah tersedia bersama pandas). Notebook 10 memerlukan `rapidfuzz`. Jika pustaka belum ada, minta bantuan untuk memasangnya di lingkungan Python yang dipakai Jupyter.
 
 ## Jika hasil tidak sesuai
 
-- Pastikan nama file dan nama kolom ditulis persis seperti yang ada di CSV.
-- Pastikan path file benar dan file berada di folder yang disebutkan.
-- Periksa pemisah CSV: biasanya koma (`,`) atau titik koma (`;`).
-- Pastikan Notebook 1 sudah dijalankan sebelum Notebook 2 jika ingin memangkas hasil join.
+- Pastikan path file benar dan nama file sama persis.
+- Pastikan nama kolom pada konfigurasi sama persis dengan judul kolom di CSV.
+- Periksa pemisah kolom CSV: koma atau titik koma.
+- Periksa pesan ringkasan pada notebook sebelum memakai hasilnya.
+- Jika ID berubah atau tidak cocok, ingat bahwa notebook membaca nilai sebagai teks agar nol di depan ID tetap terjaga.
