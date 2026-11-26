@@ -2,7 +2,7 @@
 
 Repo ini adalah kumpulan notebook untuk pekerjaan CSV, dari tugas sehari-hari sampai pencocokan data yang lebih rumit. Setiap notebook berdiri sendiri: buka notebook sesuai kebutuhan, ubah bagian **KONFIGURASI** di dekat atas, lalu jalankan sel dari atas ke bawah.
 
-File sumber di folder `Input` tidak ditimpa. Semua hasil disimpan di folder `Output`; menjalankan ulang notebook dapat mengganti hasil lama dengan nama yang sama. Notebook 11 akan berhenti jika file hasil sudah ada, kecuali Anda mengaktifkan penggantian secara khusus.
+File sumber di folder `Input` tidak ditimpa. Semua hasil disimpan di folder `Output`; menjalankan ulang notebook dapat mengganti hasil lama dengan nama yang sama. Notebook 11 akan berhenti jika file hasil sudah ada, kecuali Anda mengaktifkan penggantian secara khusus. Isi folder `Input`, `Output`, dan `output` diabaikan oleh Git (kecuali file `.gitkeep`) agar dataset dan hasil kerja lokal tidak ikut masuk repo.
 
 ## Mulai cepat
 
@@ -12,7 +12,7 @@ File sumber di folder `Input` tidak ditimpa. Semua hasil disimpan di folder `Out
 4. Jalankan notebook dari atas ke bawah.
 5. File hasil akan muncul di folder `Output`. Folder ini dibuat otomatis jika belum ada.
 
-Untuk file yang berada di tempat lain, Anda boleh menulis path lengkap. Jika CSV memakai titik koma sebagai pemisah kolom, ubah pengaturan `SEP` atau `INPUT_SEP` dari `,` menjadi `;`.
+Untuk file yang berada di tempat lain, Anda boleh menulis path lengkap. Jika CSV memakai titik koma sebagai pemisah kolom, ubah pengaturan `Separator_CSV` dari `,` menjadi `;`. Pengaturan ini tersedia dengan nama yang sama di setiap notebook.
 
 ## Pilih notebook sesuai kebutuhan
 
@@ -23,7 +23,7 @@ Untuk file yang berada di tempat lain, Anda boleh menulis path lengkap. Jika CSV
 | 3 | **Notebook 3 - Append CSV** | Menumpuk baris dari beberapa file, misalnya data per bulan. |
 | 4 | **Notebook 4 - Clean Data** | Merapikan spasi, penanda kosong, tanggal, dan angka. |
 | 5 | **Notebook 5 - Remove Duplicates** | Menemukan dan menghapus baris duplikat. |
-| 6 | **Notebook 6 - Split Dataset** | Membagi data menjadi train, validation, dan test. |
+| 6 | **Notebook 6 - Split Dataset** | Membagi data menjadi latih, validasi, dan uji. |
 | 7 | **Notebook 7 - Reshape Table** | Mengubah tabel lebar menjadi panjang atau sebaliknya. |
 | 8 | **Notebook 8 - Compare CSV** | Membandingkan dua versi CSV: baris baru, hilang, dan berubah. |
 | 9 | **Notebook 9 - Data Quality Audit** | Membuat laporan nilai kosong, duplikat, dan nilai di luar aturan. |
@@ -35,7 +35,7 @@ Untuk file yang berada di tempat lain, Anda boleh menulis path lengkap. Jika CSV
 Untuk menggabungkan file, lalu merapikan kolom:
 
 1. Jalankan **Notebook 1**. Atur file utama, kolom ID, file tambahan, dan jenis join. Hasil bawaan: `hasil_join.csv` di folder `Output`.
-2. Jalankan **Notebook 2**. Hasil join tadi sudah menjadi sumber bawaan. Isi `KEEP_COLUMNS` untuk menyimpan kolom tertentu, atau gunakan `DROP_COLUMNS` untuk membuang beberapa kolom. Hasil bawaan: `hasil_trim_kolom.csv` di folder `Output`.
+2. Jalankan **Notebook 2**. Atur `Pertahankan_Kolom` untuk menyimpan kolom tertentu, atau gunakan `Hapus_Kolom` untuk membuang beberapa kolom. Hasil bawaan: `hasil_trim_kolom.csv` di folder `Output`.
 
 ## Catatan pemakaian
 
@@ -47,7 +47,7 @@ Di Notebook 1, `left` mempertahankan semua baris dari file utama, sedangkan `inn
 
 ### Memilih atau membuang kolom
 
-Di Notebook 2, cara paling aman untuk menyimpan hanya beberapa kolom adalah mengisi `KEEP_COLUMNS`, misalnya `['id', 'nama']`. Jika `KEEP_COLUMNS` diatur ke `None`, daftar `DROP_COLUMNS` yang digunakan untuk membuang kolom.
+Di Notebook 2, cara paling aman untuk menyimpan hanya beberapa kolom adalah mengisi `Pertahankan_Kolom`, misalnya `['id', 'nama']`. Jika `Pertahankan_Kolom` diatur ke `None`, daftar `Hapus_Kolom` digunakan untuk menentukan kolom yang dibuang.
 
 ### Pembersihan dan konversi
 
@@ -55,15 +55,15 @@ Notebook 4 dapat mengubah teks tanggal menjadi format tahun-bulan-hari dan mengu
 
 ### Pembagian dataset
 
-Notebook 6 dapat membagi baris secara acak dengan hasil yang dapat diulang. Jika baris dari orang atau dokumen yang sama tidak boleh tersebar ke beberapa bagian, isi `GROUP_COLUMN`. Nilai grup yang kosong perlu dibereskan terlebih dahulu.
+Notebook 6 dapat membagi baris secara acak dengan hasil yang dapat diulang. Jika baris dari orang atau dokumen yang sama tidak boleh tersebar ke beberapa bagian, isi `Kolom_Grup`. Nilai grup yang kosong perlu dibereskan terlebih dahulu.
 
 ### Fuzzy matching
 
-Notebook 10 hanya menghasilkan kandidat kemiripan untuk diperiksa. Jangan langsung menganggap nama dengan skor tinggi sebagai orang/barang yang sama. Notebook ini memerlukan pustaka tambahan `rapidfuzz`; bila belum terpasang, jalankan `pip install rapidfuzz` pada lingkungan Python notebook. Untuk file besar, cobalah sampel terlebih dahulu lewat `LIMIT_ROWS`.
+Notebook 10 hanya menghasilkan kandidat kemiripan untuk diperiksa. Jangan langsung menganggap nama dengan skor tinggi sebagai orang/barang yang sama. Notebook ini memerlukan pustaka tambahan `rapidfuzz`; bila belum terpasang, jalankan `pip install rapidfuzz` pada lingkungan Python notebook. Untuk file besar, cobalah sampel terlebih dahulu lewat `Batas_Baris`.
 
 ### File besar
 
-Notebook 11 membaca CSV per bagian (`CHUNK_SIZE`). Jika hasil dengan nama yang sama sudah ada, notebook berhenti untuk mencegah penggantian yang tidak sengaja. Untuk menggantinya, ubah `OUTPUT_PATH` atau set `OVERWRITE_OUTPUT = True` setelah memastikan file lama memang boleh ditimpa.
+Notebook 11 membaca CSV per bagian (`Ukuran_Bagian`). Jika hasil dengan nama yang sama sudah ada, notebook berhenti untuk mencegah penggantian yang tidak sengaja. Untuk menggantinya, ubah `Output_CSV` atau set `Timpa_File_Output = True` setelah memastikan file lama memang boleh ditimpa.
 
 ## Kebutuhan Python
 

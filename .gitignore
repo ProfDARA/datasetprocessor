@@ -1,0 +1,7 @@
+# Dataset masukan dan hasil pemrosesan bersifat lokal.
+Input/*
+!Input/.gitkeep
+Output/*
+!Output/.gitkeep
+output/*
+!output/.gitkeep
