@@ -1,14 +1,24 @@
 # Panduan Pengolahan Dataset CSV
 
-Repo ini adalah kumpulan notebook untuk pekerjaan CSV, dari tugas sehari-hari sampai pencocokan data yang lebih rumit. Setiap notebook berdiri sendiri: buka notebook sesuai kebutuhan, ubah bagian **KONFIGURASI** di dekat atas, lalu jalankan sel dari atas ke bawah.
+Repo ini adalah kumpulan notebook untuk pekerjaan CSV, dari tugas sehari-hari sampai pencocokan data yang lebih rumit. Setiap notebook berdiri sendiri: buka notebook sesuai kebutuhan, ubah bagian **PENGATURAN YANG BISA DIUBAH** di dekat atas, lalu jalankan sel dari atas ke bawah.
 
 File sumber di folder `Input` tidak ditimpa. Semua hasil disimpan di folder `Output`; menjalankan ulang notebook dapat mengganti hasil lama dengan nama yang sama. Notebook 11 akan berhenti jika file hasil sudah ada, kecuali Anda mengaktifkan penggantian secara khusus. Isi folder `Input`, `Output`, dan `output` diabaikan oleh Git (kecuali file `.gitkeep`) agar dataset dan hasil kerja lokal tidak ikut masuk repo.
+
+## Persiapan awal
+
+Sebelum menjalankan notebook, buka terminal di folder repo lalu pasang semua pustaka yang diperlukan:
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
+Jalankan Jupyter dari lingkungan Python yang sama dengan perintah tersebut (`python -m notebook`), atau pilih interpreter itu sebagai kernel di Visual Studio Code. Langkah ini memasang `pandas`, `numpy`, `rapidfuzz`, dan Jupyter Notebook.
 
 ## Mulai cepat
 
 1. Letakkan semua file CSV masukan di folder `Input`, sejajar dengan notebook. Simpan hasil notebook di folder `Output` yang juga sejajar dengan notebook.
 2. Buka notebook dengan Jupyter Notebook, JupyterLab, atau Visual Studio Code.
-3. Di sel konfigurasi paling atas, sesuaikan nama file, kolom, dan pilihan proses.
+3. Di bagian pengaturan yang bisa diubah, sesuaikan nama file, kolom, dan pilihan proses.
 4. Jalankan notebook dari atas ke bawah.
 5. File hasil akan muncul di folder `Output`. Folder ini dibuat otomatis jika belum ada.
 
@@ -59,15 +69,15 @@ Notebook 6 dapat membagi baris secara acak dengan hasil yang dapat diulang. Jika
 
 ### Fuzzy matching
 
-Notebook 10 hanya menghasilkan kandidat kemiripan untuk diperiksa. Jangan langsung menganggap nama dengan skor tinggi sebagai orang/barang yang sama. Notebook ini memerlukan pustaka tambahan `rapidfuzz`; bila belum terpasang, jalankan `pip install rapidfuzz` pada lingkungan Python notebook. Untuk file besar, cobalah sampel terlebih dahulu lewat `Batas_Baris`.
+Notebook 10 hanya menghasilkan kandidat kemiripan untuk diperiksa. Jangan langsung menganggap nama dengan skor tinggi sebagai orang/barang yang sama. Pustaka `rapidfuzz` sudah tercantum di `requirements.txt`; jalankan perintah pemasangan di bagian Persiapan awal sebelum membuka notebook. Untuk file besar, cobalah sampel terlebih dahulu lewat `Batas_Baris`.
 
 ### File besar
 
 Notebook 11 membaca CSV per bagian (`Ukuran_Bagian`). Jika hasil dengan nama yang sama sudah ada, notebook berhenti untuk mencegah penggantian yang tidak sengaja. Untuk menggantinya, ubah `Output_CSV` atau set `Timpa_File_Output = True` setelah memastikan file lama memang boleh ditimpa.
 
-## Kebutuhan Python
+## Pustaka yang digunakan
 
-Notebook 1–9 dan 11 menggunakan `pandas`. Notebook 6 juga menggunakan `numpy` (sering sudah tersedia bersama pandas). Notebook 10 memerlukan `rapidfuzz`. Jika pustaka belum ada, minta bantuan untuk memasangnya di lingkungan Python yang dipakai Jupyter.
+Daftar pustaka ada di [`requirements.txt`](requirements.txt): `pandas` dipakai Notebook 1 sampai 11, `numpy` dipakai Notebook 6, dan `rapidfuzz` dipakai Notebook 10. Paket `notebook` menyediakan aplikasi Jupyter Notebook.
 
 ## Jika hasil tidak sesuai
 
